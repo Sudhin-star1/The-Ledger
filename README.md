@@ -34,6 +34,8 @@ After changing `api-config.js`, commit and push; Vercel redeploys automatically.
 
 ## Deploy backend (Flask)
 
+**Opening `https://your-service.onrender.com/` in a browser:** this app is **API-only** (Flask). The **dashboard lives on Vercel**. The API is used at **`GET /state`** and **`POST /state`**. The root **`/`** returns a small JSON “health” response so you don’t see a raw 404.
+
 ### Render (Web Service)
 
 1. **Root directory:** repo root (or leave default).

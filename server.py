@@ -49,6 +49,19 @@ def save_state(data: dict) -> None:
         json.dump(data, f, ensure_ascii=False)
 
 
+@app.get("/")
+def root():
+    """Render health check + browser hint (UI is on Vercel; this service is API-only)."""
+    return jsonify(
+        {
+            "service": "The Ledger API",
+            "ok": True,
+            "endpoints": {"GET /state": "load ledger", "POST /state": "save ledger"},
+            "note": "Open your Vercel site for the dashboard; this URL is only the backend.",
+        }
+    )
+
+
 @app.get("/state")
 def get_state():
     """Return the current ledger state."""
