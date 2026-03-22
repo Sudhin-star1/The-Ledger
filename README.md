@@ -24,13 +24,26 @@ Local dev: run Flask on port `8000` and serve the folder with any static server 
 
 ## Deploy backend (Flask)
 
-Example (Railway / Render — adjust for your provider):
+### Render (Web Service)
 
-- Start command: `python server.py` (or `gunicorn` in production).
-- Set `PORT` if the platform injects it (you may need a one-line change to read `os.environ.get("PORT", "8000")` — add if your host requires it).
-- Ensure the filesystem path for `ledger_state.json` is persistent on that platform (ephemeral disks reset on some free tiers).
+1. **Root directory:** repo root (or leave default).
+2. **Build command:** `pip install -r requirements.txt`
+3. **Start command** (this is what the “Required” field wants — **not** `gunicorn your_application.wsgi`; that’s Django):
 
-Dependencies: see `requirements.txt`.
+   ```bash
+   gunicorn --bind 0.0.0.0:$PORT server:app
+   ```
+
+   - `server` = the file `server.py`
+   - `app` = the Flask instance inside it (`app = Flask(__name__)`)
+
+4. Render sets **`PORT`** automatically; `server.py` already reads it if you run `python server.py`, but **Gunicorn** must bind to `$PORT` as above.
+
+**Note:** Free/ephemeral disks may reset `ledger_state.json` on redeploys. For permanent storage, use a Render disk or a database later.
+
+Other hosts (Railway, Fly): same idea — run Gunicorn pointing at `server:app`, or `python server.py` if the platform supports it.
+
+Dependencies: see `requirements.txt` (includes `gunicorn` for Render).
 
 ## Git: create repo and push
 
