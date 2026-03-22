@@ -951,16 +951,16 @@
             MISSED_DAY_PENALTY: 200 // $200 penalty for doing nothing
         };
 
-        // Backend API base: set window.THE_LEDGER_API_BASE in /api-config.js (Vercel + hosted API)
+        // Backend API: localhost always uses local Flask; Vercel/production uses THE_LEDGER_API_BASE from api-config.js
         const API_BASE = (() => {
+            if (typeof location !== 'undefined' && (location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+                return 'http://localhost:8000';
+            }
             const fromConfig = (typeof window !== 'undefined' && window.THE_LEDGER_API_BASE)
                 ? String(window.THE_LEDGER_API_BASE).trim()
                 : '';
             if (fromConfig) return fromConfig;
-            if (typeof location !== 'undefined' && (location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
-                return 'http://localhost:8000';
-            }
-            console.warn('[Ledger] Set THE_LEDGER_API_BASE in api-config.js to your deployed Flask URL.');
+            console.warn('[Ledger] Set THE_LEDGER_API_BASE in api-config.js to your Render URL.');
             return '';
         })();
 

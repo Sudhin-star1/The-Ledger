@@ -6,4 +6,4 @@
  * Example:
  *   window.THE_LEDGER_API_BASE = 'https://your-app.up.railway.app';
  */
-window.THE_LEDGER_API_BASE = '';
+window.THE_LEDGER_API_BASE = 'https://your-service.onrender.com';

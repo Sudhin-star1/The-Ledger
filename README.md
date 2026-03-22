@@ -17,10 +17,16 @@ Local dev: run Flask on port `8000` and serve the folder with any static server 
 
 ## Deploy frontend on Vercel
 
-1. Push this repo to GitHub (see below).
-2. In Vercel: **New Project** → import the repo → Framework: **Other** (static).
-3. After deploy, open your Vercel URL — you should see `index.html`.
-4. Edit **`api-config.js`** in the repo to set `window.THE_LEDGER_API_BASE` to your deployed Flask URL, commit, and redeploy.
+1. Push this repo to GitHub.
+2. [Vercel](https://vercel.com) → **Add New…** → **Project** → import **`Sudhin-star1/The-Ledger`** (or your fork).
+3. **Framework preset:** Other (or “No framework”). Root directory: **`.`** (repo root).
+4. **Build command:** leave empty (or `echo "static"`). **Output:** not required for static HTML at root — Vercel serves `index.html` at `/`.
+5. Deploy. Your site URL will look like `https://the-ledger-xxxx.vercel.app`.
+
+**API URL:** `api-config.js` sets `window.THE_LEDGER_API_BASE` to your **Render** URL (e.g. `https://the-ledger-nvt1.onrender.com`).  
+**Local dev:** when you open `http://localhost:5500`, the app uses **`http://localhost:8000`** for Flask — it does **not** use Render, so you can run `python server.py` locally.
+
+After changing `api-config.js`, commit and push; Vercel redeploys automatically.
 
 ## Deploy backend (Flask)
 

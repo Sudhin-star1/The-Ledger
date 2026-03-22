@@ -1,6 +1,4 @@
 /**
- * Backend URL for the Ledger API (`GET/POST /state`).
- * For local dev, leave empty — `index.html` falls back to http://localhost:8000.
- * For production, set to your deployed Flask app (see README).
+ * Production API (Render). Local dev ignores this — index.html uses http://localhost:8000 on localhost.
  */
-window.THE_LEDGER_API_BASE = '';
+window.THE_LEDGER_API_BASE = 'https://the-ledger-nvt1.onrender.com';
