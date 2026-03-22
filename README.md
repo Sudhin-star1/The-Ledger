@@ -1,81 +1,66 @@
 # The Ledger
 
-Static dashboard (`index.html`) + a small **Flask** API (`server.py`) that persists shared state to `ledger_state.json`.
+Static dashboard (`index.html`) + a small **Flask** API under **`backend/`** (`backend/server.py`) that persists shared state to **`backend/ledger_state.json`**.
 
 ## Why not “only Vercel”?
 
-- **Vercel** is great for the **frontend** (HTML/CSS/JS).
-- **`server.py` is not a good fit for plain Vercel static hosting**: it needs a long‑running process and a writable file (or a database). Vercel serverless can be adapted, but this repo uses the simple Flask + JSON file approach.
+- **Vercel** hosts the **frontend** (HTML/CSS/JS built into `dist/`).
+- **Flask** runs on **Render** (or Railway/Fly) — not on Vercel’s static hosting.
+
+**Important:** A **`requirements.txt` at the repo root** made Vercel treat the project as **Python** and try to run **serverless functions**, which caused **`500 FUNCTION_INVOCATION_FAILED`**. Python now lives only in **`backend/`**, and **`.vercelignore`** excludes that folder from the Vercel deployment.
 
 **Recommended split**
 
-1. Deploy **this repo’s static files** to **Vercel** (root `index.html`).
-2. Deploy **`server.py`** to **Railway**, **Render**, **Fly.io**, or any VPS.
-3. Set the backend URL in **`api-config.js`** (`window.THE_LEDGER_API_BASE`).
+1. Deploy **this repo** to **Vercel** (static output from `npm run build` → `dist/`).
+2. Deploy **`backend/`** to **Render** (or similar).
+3. Set the API URL in **`api-config.js`** (`window.THE_LEDGER_API_BASE`).
 
-Local dev: run Flask on port `8000` and serve the folder with any static server (e.g. `python -m http.server 5500`).
+## Local dev
+
+- **Frontend:** from repo root, e.g. `python3 -m http.server 5500` and open `http://localhost:5500`.
+- **API:** from repo root:
+
+  ```bash
+  cd backend && python3 server.py
+  ```
+
+  Flask listens on **`http://localhost:8000`**. The UI uses that when hostname is `localhost` / `127.0.0.1`.
 
 ## Deploy frontend on Vercel
 
-Vercel was showing **404** if it auto-detected **Python** (`requirements.txt`) and didn’t emit static files. This repo uses a tiny **`npm run build`** that copies HTML/JS into **`dist/`**, and **`vercel.json`** sets **`outputDirectory`** to `dist`.
+1. Push this repo to GitHub (`package.json`, `scripts/copy-static.js`, `vercel.json`).
+2. [Vercel](https://vercel.com) → **New Project** → import the repo.
+3. **Root directory:** `.`  
+4. **Build Command:** `npm run build` · **Output Directory:** `dist` (from `vercel.json`).
+5. **Framework:** Other / Node is fine — there must be **no** root `requirements.txt` (Python is under `backend/` only).
 
-1. Push this repo to GitHub (includes `package.json` + `scripts/copy-static.js`).
-2. [Vercel](https://vercel.com) → **Add New…** → **Project** → import the repo.
-3. **Framework:** Vercel may pick **Other** or **Node** — that’s fine. Root: **`.`**
-4. Confirm **Build Command** is `npm run build` and **Output Directory** is `dist` (usually read from `vercel.json`).
-5. Deploy. Open the production URL — `/` should serve `index.html`.
+If you still see errors: **Settings → General** → remove overrides for build/output, then **Redeploy**.
 
-If you still see 404: **Project → Settings → General** → clear overrides so `vercel.json` controls build/output, then redeploy.
+**Production API URL** is set in **`api-config.js`** (e.g. your Render URL).
 
-**API URL:** `api-config.js` sets `window.THE_LEDGER_API_BASE` to your **Render** URL (e.g. `https://the-ledger-nvt1.onrender.com`).  
-**Local dev:** when you open `http://localhost:5500`, the app uses **`http://localhost:8000`** for Flask — it does **not** use Render, so you can run `python server.py` locally.
+## Deploy backend on Render
 
-After changing `api-config.js`, commit and push; Vercel redeploys automatically.
-
-## Deploy backend (Flask)
-
-**Opening `https://your-service.onrender.com/` in a browser:** this app is **API-only** (Flask). The **dashboard lives on Vercel**. The API is used at **`GET /state`** and **`POST /state`**. The root **`/`** returns a small JSON “health” response so you don’t see a raw 404.
-
-### Render (Web Service)
-
-1. **Root directory:** repo root (or leave default).
+1. **Root Directory:** `backend` (not the monorepo root).
 2. **Build command:** `pip install -r requirements.txt`
-3. **Start command** (this is what the “Required” field wants — **not** `gunicorn your_application.wsgi`; that’s Django):
+3. **Start command:**
 
    ```bash
    gunicorn --bind 0.0.0.0:$PORT server:app
    ```
 
-   - `server` = the file `server.py`
-   - `app` = the Flask instance inside it (`app = Flask(__name__)`)
+4. Data file: **`backend/ledger_state.json`** (gitignored). Free tier disks may reset on redeploys.
 
-4. Render sets **`PORT`** automatically; `server.py` already reads it if you run `python server.py`, but **Gunicorn** must bind to `$PORT` as above.
+### Migrating an existing Render service
 
-**Note:** Free/ephemeral disks may reset `ledger_state.json` on redeploys. For permanent storage, use a Render disk or a database later.
+If the service was created with **root** as the app directory, change **Root Directory** to **`backend`**, save, and redeploy. Copy any existing **`ledger_state.json`** into **`backend/`** on the host if needed.
 
-Other hosts (Railway, Fly): same idea — run Gunicorn pointing at `server:app`, or `python server.py` if the platform supports it.
-
-Dependencies: see `requirements.txt` (includes `gunicorn` for Render).
-
-## Git: create repo and push
-
-From this folder:
-
-```bash
-cd "/path/to/The Ledger"
-git init
-git add .
-git commit -m "Initial commit: The Ledger"
-```
-
-Create an empty repository on GitHub (no README/license if you already have files), then:
+## Git: push
 
 ```bash
 git remote add origin https://github.com/YOUR_USER/YOUR_REPO.git
-git branch -M main
 git push -u origin main
 ```
 
 ## Privacy
 
-`ledger_state.json` is listed in `.gitignore` so your personal ledger is not committed by mistake.
+`ledger_state.json` is gitignored (anywhere in the repo) so your data is not committed by mistake.
