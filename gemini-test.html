@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gemini API Smoke Test</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #000;
+      color: #eee;
+      padding: 20px;
+    }
+    .card {
+      max-width: 700px;
+      margin: 0 auto;
+      border: 1px solid #444;
+      padding: 16px;
+      border-radius: 8px;
+      background: #111;
+    }
+    input[type="password"], input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin: 4px 0 12px;
+      background: #000;
+      border: 1px solid #555;
+      color: #eee;
+      border-radius: 4px;
+    }
+    button {
+      padding: 8px 16px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button#run-btn {
+      background: #0f9d58;
+      color: #fff;
+      margin-right: 8px;
+    }
+    button#run-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    button#clear-btn {
+      background: #444;
+      color: #eee;
+    }
+    pre {
+      background: #000;
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #333;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 350px;
+      overflow: auto;
+    }
+    .status {
+      margin-top: 8px;
+      font-size: 13px;
+    }
+    .status.ok { color: #00e676; }
+    .status.err { color: #ff5252; }
+    small {
+      color: #aaa;
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Gemini API Key Smoke Test</h2>
+    <p>Paste your Gemini API key below and click <strong>Run test</strong>. This will send a tiny prompt to <code>gemini-pro</code> and show the raw JSON response.</p>
+    <p><strong>Important:</strong> This runs entirely in your browser. Do not commit this file or your key to git.</p>
+
+    <label for="api-key-input">Gemini API key</label>
+    <input id="api-key-input" type="password" autocomplete="off" placeholder="Paste your key here">
+
+    <label for="prompt-input">Test prompt</label>
+    <input id="prompt-input" type="text" value="Say: Gemini API is working.">
+
+    <div style="margin-top:8px;">
+      <button id="run-btn">Run test</button>
+      <button id="clear-btn" type="button">Clear output</button>
+    </div>
+
+    <div id="status" class="status"></div>
+
+    <h3>Response</h3>
+    <pre id="output">(no response yet)</pre>
+
+    <p><small>Endpoint: <code>https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent</code></small></p>
+  </div>
+
+  <script>
+    const runBtn = document.getElementById('run-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const apiKeyInput = document.getElementById('api-key-input');
+    const promptInput = document.getElementById('prompt-input');
+    const outputEl = document.getElementById('output');
+    const statusEl = document.getElementById('status');
+
+    function setStatus(msg, type) {
+      statusEl.textContent = msg;
+      statusEl.className = 'status ' + (type || '');
+    }
+
+    async function runTest() {
+      const apiKey = apiKeyInput.value.trim();
+      const prompt = promptInput.value.trim() || 'Say: Gemini API is working.';
+
+      if (!apiKey) {
+        setStatus('Please paste your API key first.', 'err');
+        return;
+      }
+
+      runBtn.disabled = true;
+      setStatus('Calling Gemini…', '');
+
+      try {
+        // Use v1 endpoint with broadly-available gemini-pro
+        const endpoint = 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key='
+          + encodeURIComponent(apiKey);
+
+        const res = await fetch(
+          endpoint,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }]
+            })
+          }
+        );
+
+        const data = await res.json();
+        outputEl.textContent = JSON.stringify(data, null, 2);
+
+        if (res.ok && data?.candidates?.length) {
+          setStatus('✅ Gemini responded successfully.', 'ok');
+        } else {
+          setStatus('❌ Request completed but response indicates an error. Check details below.', 'err');
+        }
+      } catch (err) {
+        console.error(err);
+        setStatus('❌ Network or JavaScript error — see console.', 'err');
+        outputEl.textContent = String(err);
+      } finally {
+        runBtn.disabled = false;
+      }
+    }
+
+    runBtn.addEventListener('click', runTest);
+    clearBtn.addEventListener('click', () => {
+      outputEl.textContent = '(no response yet)';
+      setStatus('', '');
+    });
+  </script>
+</body>
+</html>
+

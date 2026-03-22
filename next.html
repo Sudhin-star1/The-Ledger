@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>█ THE LEDGER | 5 YEAR MILLIONAIRE PROJECTION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #00ff00;
+            --red: #ff0000;
+            --gold: #d4af37;
+            --white: #ffffff;
+            --black: #000000;
+            --dark-wood: #2a1e0f;
+            --dark-red: #330000;
+        }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* MAIN GRID - FIXED LAYOUT */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 20px;
+            flex: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* PANEL BASE */
+        .panel {
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(2px);
+            min-height: 600px;
+        }
+
+        /* LEFT PANEL - DEBT COLLECTOR */
+        .left-panel {
+            background: linear-gradient(135deg, #1a120a, #2a1e0f);
+            border-right: 2px solid var(--gold);
+        }
+
+        .reckoning-clock {
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            margin-bottom: 20px;
+            font-family: 'Inter', monospace;
+            letter-spacing: 2px;
+        }
+
+        .collector-chamber {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+        }
+
+        .collector-door {
+            width: 180px;
+            height: 250px;
+            background: #4a3729;
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.8);
+            margin-bottom: 20px;
+        }
+
+        .collector-door::before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: var(--gold);
+            border-radius: 50%;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            box-shadow: 0 0 20px gold;
+        }
+
+        .collector-door.open {
+            transform: rotateY(180deg);
+            opacity: 0.7;
+        }
+
+        .collector-figure {
+            text-align: center;
+            margin: 10px 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .collector-figure.visible {
+            opacity: 1;
+        }
+
+        .collector-head {
+            width: 50px;
+            height: 50px;
+            background: #111;
+            border-radius: 50%;
+            margin: 0 auto;
+            border: 2px solid var(--gold);
+        }
+
+        .collector-body {
+            width: 70px;
+            height: 100px;
+            background: #111;
+            margin: 5px auto;
+            clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 100%, 0% 100%, 0% 20%);
+            border: 1px solid var(--gold);
+            position: relative;
+        }
+
+        .collector-body::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 40px;
+            background: rgba(212, 175, 55, 0.2);
+            border-radius: 5px;
+        }
+
+        .collector-speech {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 16px;
+            color: var(--gold);
+            margin-top: 15px;
+            min-height: 60px;
+            text-align: center;
+        }
+
+        /* INPUT SECTION */
+        .confession-section {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .confession-input {
+            width: 100%;
+            padding: 15px;
+            background: #111;
+            border: 2px solid var(--gold);
+            color: var(--white);
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .confession-input:focus {
+            outline: none;
+            border-color: var(--green);
+            box-shadow: 0 0 20px rgba(0,255,0,0.2);
+        }
+
+        .confession-input.met-goal {
+            border-color: var(--green);
+        }
+
+        .confession-input.missed-goal {
+            border-color: var(--red);
+        }
+
+        .settle-button {
+            width: 100%;
+            padding: 15px;
+            background: var(--gold);
+            color: var(--black);
+            font-weight: 900;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 2px;
+            border-radius: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .settle-button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .settle-button:not(:disabled):hover {
+            background: #e5c158;
+            transform: scale(1.02);
+            box-shadow: 0 0 30px gold;
+        }
+
+        /* CENTER PANEL */
+        .center-panel {
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .center-panel::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .center-panel::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        .center-panel::-webkit-scrollbar-thumb {
+            background: var(--gold);
+        }
+
+        .best-streak {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border: 1px solid var(--gold);
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 10;
+        }
+
+        /* MILLIONAIRE TRACKER */
+        .millionaire-tracker {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .target-date {
+            font-size: 14px;
+            color: var(--gold);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .current-networth {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--green);
+            text-shadow: 0 0 20px rgba(0,255,0,0.3);
+            line-height: 1.2;
+        }
+
+        .networth-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .progress-to-million {
+            margin: 20px 0;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 30px;
+            background: #222;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--green));
+            width: 0%;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 5px;
+            height: 100%;
+            background: white;
+            box-shadow: 0 0 10px white;
+            animation: pulse 1s infinite;
+        }
+
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
+        .remaining-amount {
+            color: var(--gold);
+        }
+
+        /* METRICS GRID */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .metric-card {
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 15px;
+            text-align: center;
+            background: rgba(0,0,0,0.5);
+            border-radius: 5px;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: var(--gold);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: 700;
+            font-family: 'Inter', monospace;
+        }
+
+        .metric-sub {
+            font-size: 10px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 5px;
+        }
+
+        /* GAP VISUALIZER */
+        .gap-visualizer {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 5px;
+        }
+
+        .gap-title {
+            font-size: 12px;
+            color: var(--gold);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .bar-container {
+            margin-bottom: 15px;
+        }
+
+        .bar-label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 5px;
+        }
+
+        .bar {
+            height: 30px;
+            background: #222;
+            position: relative;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .required-fill {
+            background: #004400;
+            color: var(--green);
+        }
+
+        .actual-fill {
+            background: #440000;
+            color: var(--red);
+        }
+
+        .bar-value {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            z-index: 2;
+        }
+
+        .gap-display {
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 3px;
+            margin-top: 10px;
+        }
+
+        .gap-display.red {
+            background: rgba(255,0,0,0.1);
+            color: var(--red);
+        }
+
+        .gap-display.green {
+            background: rgba(0,255,0,0.1);
+            color: var(--green);
+        }
+
+        /* COMPOUND BARS */
+        .compound-section {
+            margin: 20px 0;
+        }
+
+        .compound-title {
+            font-size: 12px;
+            color: var(--gold);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .compound-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 60px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .compound-bars::-webkit-scrollbar {
+            height: 3px;
+        }
+
+        .compound-bars::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        .compound-bars::-webkit-scrollbar-thumb {
+            background: var(--gold);
+        }
+
+        .compound-bar {
+            width: 25px;
+            min-width: 25px;
+            background: var(--gold);
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .compound-bar:hover {
+            transform: scaleY(1.1);
+        }
+
+        .compound-bar::after {
+            content: attr(data-date);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 8px;
+            white-space: nowrap;
+            background: #000;
+            padding: 2px 4px;
+            border: 1px solid var(--gold);
+            display: none;
+        }
+
+        .compound-bar:hover::after {
+            display: block;
+        }
+
+        .compound-bar.missed {
+            background: #000;
+            border: 1px solid var(--red);
+        }
+
+        /* REGRET ENGINE */
+        .regret-engine {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid rgba(255,0,0,0.3);
+            background: rgba(255,0,0,0.05);
+            border-radius: 5px;
+        }
+
+        .regret-title {
+            font-size: 12px;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .regret-amount {
+            font-size: 32px;
+            color: var(--red);
+            font-weight: 900;
+        }
+
+        .regret-hours {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* RIGHT PANEL */
+        .right-panel {
+            background: linear-gradient(135deg, #1a0f0a, #2d1a12);
+        }
+
+        .reliquary {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .reliquary-title {
+            font-size: 14px;
+            color: var(--gold);
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .reliquary-case {
+            width: 200px;
+            height: 300px;
+            margin: 0 auto 20px;
+            border: 3px solid rgba(212, 175, 55, 0.5);
+            box-shadow: inset 0 0 50px rgba(212, 175, 55, 0.2);
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .reliquary-inscription {
+            position: absolute;
+            top: 20px;
+            left: 10px;
+            right: 10px;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 14px;
+            color: rgba(212, 175, 55, 0.6);
+            text-align: center;
+        }
+
+        .reliquary-key {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 40px;
+            transition: bottom 0.5s ease;
+        }
+
+        .key-head {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 30px gold;
+        }
+
+        .key-head::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border-radius: 50%;
+            background: #1a1205;
+        }
+
+        .key-shaft {
+            position: absolute;
+            left: 0;
+            top: 15px;
+            width: 90px;
+            height: 10px;
+            background: var(--gold);
+            border-radius: 5px 0 0 5px;
+        }
+
+        .key-teeth {
+            position: absolute;
+            left: 40px;
+            top: 25px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .key-tooth {
+            width: 5px;
+            height: 15px;
+            background: var(--gold);
+        }
+
+        .reliquary-seal {
+            height: 60px;
+            margin: 10px 0;
+        }
+
+        .proximity-counter {
+            font-size: 14px;
+            padding: 10px;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        /* PENALTY SECTION */
+        .penalty-section {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid rgba(255,0,0,0.3);
+            background: rgba(255,0,0,0.05);
+            border-radius: 5px;
+        }
+
+        .penalty-label {
+            font-size: 11px;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .penalty-value {
+            font-size: 24px;
+            color: var(--red);
+            font-weight: 700;
+        }
+
+        /* GRAVEYARD */
+        .graveyard {
+            margin-top: 20px;
+            height: 60px;
+            display: flex;
+            overflow-x: auto;
+            gap: 5px;
+            padding: 5px;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .tombstone {
+            width: 40px;
+            height: 50px;
+            background: #333;
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tombstone:hover {
+            transform: translateY(-5px);
+            filter: brightness(1.2);
+        }
+
+        .tombstone::before {
+            content: 'RIP';
+            position: absolute;
+            top: 5px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 8px;
+            color: #999;
+        }
+
+        .tombstone::after {
+            content: '+';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 10px;
+            color: #ccc;
+        }
+
+        .tombstone-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: black;
+            border: 1px solid var(--gold);
+            padding: 4px 8px;
+            font-size: 10px;
+            white-space: nowrap;
+            display: none;
+            z-index: 100;
+        }
+
+        .tombstone:hover .tombstone-tooltip {
+            display: block;
+        }
+
+        /* MANTRA FOOTER */
+        .mantra-footer {
+            margin-top: 20px;
+            padding: 15px;
+            border-top: 1px solid var(--gold);
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            color: var(--gold);
+            font-size: 14px;
+        }
+
+        /* ANIMATIONS */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes ghostFlicker {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.3; }
+        }
+
+        @keyframes doorOpen {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(180deg); }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1200px) {
+            .dashboard {
+                grid-template-columns: 250px 1fr 250px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .panel {
+                min-height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- LEFT PANEL -->
+        <div class="panel left-panel">
+            <div class="reckoning-clock" id="reckoning-clock">RECKONING IN: 00:00:00</div>
+            
+            <div class="collector-chamber">
+                <div class="collector-door" id="collector-door"></div>
+                <div class="collector-figure" id="collector-figure">
+                    <div class="collector-head"></div>
+                    <div class="collector-body"></div>
+                </div>
+                <div class="collector-speech" id="collector-speech">
+                    "The Ledger remembers what you pretend to forget."
+                </div>
+            </div>
+
+            <div class="confession-section">
+                <input type="number" class="confession-input" id="hours-input" placeholder="HOURS WORKED TODAY (0-24)" step="0.1" min="0" max="24">
+                <button class="settle-button" id="settle-button" disabled>SETTLE THE LEDGER</button>
+            </div>
+
+            <div class="penalty-section">
+                <div class="penalty-label">PENALTY RATE</div>
+                <div class="penalty-value" id="penalty-rate">+0.0%</div>
+                <div style="font-size: 10px; color: rgba(255,255,255,0.5);">interest accruing daily</div>
+            </div>
+        </div>
+
+        <!-- CENTER PANEL -->
+        <div class="panel center-panel">
+            <div class="best-streak">
+                <span style="color: var(--gold);">BEST:</span>
+                <span id="best-streak" style="color: var(--green); font-weight: 700;">0</span>
+                <span style="color: var(--gold);">days</span>
+            </div>
+
+            <!-- MILLIONAIRE TRACKER -->
+            <div class="millionaire-tracker">
+                <div class="target-date" id="target-date">TARGET: MILLIONAIRE BY 2028</div>
+                <div class="current-networth" id="current-networth">$0</div>
+                <div class="networth-label">CURRENT NET WORTH</div>
+                
+                <div class="progress-to-million">
+                    <div class="progress-bar-bg">
+                        <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+                    </div>
+                    <div class="progress-stats">
+                        <span id="percent-to-million">0%</span>
+                        <span class="remaining-amount" id="remaining-amount">$1,000,000 left</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- METRICS GRID -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">DAILY REQUIRED</div>
+                    <div class="metric-value" id="daily-required">2.0</div>
+                    <div class="metric-sub">hours to hit goal</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">CURRENT PACE</div>
+                    <div class="metric-value" id="current-pace">0.0</div>
+                    <div class="metric-sub">avg hours/day</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">PROJECTED BY 2028</div>
+                    <div class="metric-value" id="projected-amount">$0</div>
+                    <div class="metric-sub">at current pace</div>
+                </div>
+            </div>
+
+            <!-- GAP VISUALIZER -->
+            <div class="gap-visualizer">
+                <div class="gap-title">TODAY'S ACCOUNTABILITY</div>
+                
+                <div class="bar-container">
+                    <div class="bar-label">REQUIRED: <span id="required-label">2.0 hours</span></div>
+                    <div class="bar">
+                        <div class="bar-fill required-fill" id="required-bar" style="width: 100%;"></div>
+                        <span class="bar-value" id="required-value">2.0h</span>
+                    </div>
+                </div>
+
+                <div class="bar-container">
+                    <div class="bar-label">YOUR DELIVERY: <span id="actual-label">0.0 hours</span></div>
+                    <div class="bar">
+                        <div class="bar-fill actual-fill" id="actual-bar" style="width: 0%;"></div>
+                        <span class="bar-value" id="actual-value">0.0h</span>
+                    </div>
+                </div>
+
+                <div class="gap-display" id="gap-display">
+                    GAP: 2.0 HOURS - INTEREST ACCRUING
+                </div>
+            </div>
+
+            <!-- COMPOUND INTEREST VISUALIZER -->
+            <div class="compound-section">
+                <div class="compound-title">5 YEAR COMMITMENT TRACKER (1825 DAYS)</div>
+                <div class="compound-bars" id="compound-bars"></div>
+            </div>
+
+            <!-- REGRET ENGINE -->
+            <div class="regret-engine" id="regret-engine">
+                <div class="regret-title">LIFETIME OPPORTUNITY LOST</div>
+                <div class="regret-amount" id="regret-amount">$0</div>
+                <div class="regret-hours" id="regret-hours">0 hours you'll never get back</div>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="panel right-panel">
+            <div class="reliquary">
+                <div class="reliquary-title">THE PRIZE</div>
+                <div class="reliquary-case" id="reliquary-case">
+                    <div class="reliquary-inscription">
+                        FOR THE MAN WHO DOES NOT NEGOTIATE WITH WEAKNESS
+                    </div>
+                    <div class="reliquary-key" id="reliquary-key">
+                        <div class="key-shaft"></div>
+                        <div class="key-teeth">
+                            <div class="key-tooth"></div>
+                            <div class="key-tooth"></div>
+                            <div class="key-tooth"></div>
+                        </div>
+                        <div class="key-head"></div>
+                    </div>
+                </div>
+                <div class="reliquary-seal" id="reliquary-seal"></div>
+                <div class="proximity-counter" id="proximity-counter">
+                    DISTANCE TO KEY: 30 DAYS OF HONOR
+                </div>
+            </div>
+
+            <!-- GRAVEYARD -->
+            <div class="graveyard" id="graveyard"></div>
+        </div>
+    </div>
+
+    <!-- MANTRA FOOTER -->
+    <div class="mantra-footer">
+        "Every hour you work, you buy one hour of freedom. Every hour you waste, you sell one hour of your life to a future you don't respect."
+    </div>
+
+    <script>
+        // ===========================================
+        // 5 YEAR MILLIONAIRE EDITION - CORE ENGINE
+        // ===========================================
+
+        // Configuration
+        const CONFIG = {
+            TARGET_AGE: 28,
+            TARGET_NET_WORTH: 1000000, // $1M
+            HOURLY_RATE: 50, // $50/hour (adjust based on your actual rate)
+            REQUIRED_DAILY: 4, // 4 hours daily to reach $1M in 5 years
+            START_DATE: new Date().toISOString().split('T')[0],
+            TOTAL_DAYS: 1825, // 5 years
+            DAILY_GOAL_DOLLARS: 548, // $1M / 1825 days ≈ $548/day value
+        };
+
+        // State management
+        let state = {
+            logs: [],
+            requiredDaily: CONFIG.REQUIRED_DAILY,
+            currentStreak: 0,
+            bestStreak: 0,
+            tombstoneExcuses: [],
+            lastMirrorTest: '',
+        };
+
+        // Load from localStorage
+        function loadState() {
+            try {
+                state.logs = JSON.parse(localStorage.getItem('ledger_logs')) || [];
+                state.requiredDaily = parseFloat(localStorage.getItem('ledger_required')) || CONFIG.REQUIRED_DAILY;
+                state.bestStreak = parseInt(localStorage.getItem('ledger_best_streak')) || 0;
+                state.tombstoneExcuses = JSON.parse(localStorage.getItem('ledger_excuses')) || [];
+                state.lastMirrorTest = localStorage.getItem('ledger_last_mirror') || '';
+            } catch (e) {
+                console.log('Initializing new state');
+                initializeSampleData();
+            }
+        }
+
+        // Save to localStorage
+        function saveState() {
+            localStorage.setItem('ledger_logs', JSON.stringify(state.logs));
+            localStorage.setItem('ledger_required', state.requiredDaily.toString());
+            localStorage.setItem('ledger_best_streak', state.bestStreak.toString());
+            localStorage.setItem('ledger_excuses', JSON.stringify(state.tombstoneExcuses));
+            localStorage.setItem('ledger_last_mirror', state.lastMirrorTest);
+        }
+
+        // Initialize with realistic sample data
+        function initializeSampleData() {
+            const today = new Date();
+            const sampleLogs = [];
+            
+            // Generate 30 days of sample data that shows progress but room for improvement
+            for (let i = 30; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                
+                // Make it realistic: 2-5 hours with some variance
+                const actual = 2 + (Math.random() * 3);
+                
+                sampleLogs.push({
+                    date: date.toISOString().split('T')[0],
+                    required: CONFIG.REQUIRED_DAILY,
+                    actual: actual,
+                    excuse: actual < CONFIG.REQUIRED_DAILY ? 'sample' : ''
+                });
+            }
+            
+            state.logs = sampleLogs;
+            saveState();
+        }
+
+        // Calculate current net worth
+        function calculateNetWorth() {
+            const totalHours = state.logs.reduce((sum, log) => sum + log.actual, 0);
+            return totalHours * CONFIG.HOURLY_RATE;
+        }
+
+        // Calculate projected net worth by 2028
+        function calculateProjected() {
+            const last30Days = state.logs.slice(-30);
+            const avgDaily = last30Days.length > 0
+                ? last30Days.reduce((sum, log) => sum + log.actual, 0) / last30Days.length
+                : 0;
+            
+            const daysLeft = CONFIG.TOTAL_DAYS - state.logs.length;
+            const currentNet = calculateNetWorth();
+            const projected = currentNet + (avgDaily * daysLeft * CONFIG.HOURLY_RATE);
+            
+            return projected;
+        }
+
+        // Calculate required daily to hit million
+        function calculateRequiredPace() {
+            const currentNet = calculateNetWorth();
+            const remaining = CONFIG.TARGET_NET_WORTH - currentNet;
+            const daysLeft = CONFIG.TOTAL_DAYS - state.logs.length;
+            
+            if (daysLeft <= 0) return 0;
+            const requiredDaily = remaining / (daysLeft * CONFIG.HOURLY_RATE);
+            return Math.max(0, requiredDaily);
+        }
+
+        // Update streak
+        function updateStreak() {
+            const sorted = [...state.logs].sort((a, b) => new Date(a.date) - new Date(b.date));
+            let currentStreak = 0;
+            
+            // Check today
+            const today = new Date().toISOString().split('T')[0];
+            const todayLog = sorted.find(log => log.date === today);
+            
+            if (todayLog && todayLog.actual >= todayLog.required) {
+                currentStreak = 1;
+                
+                let checkDate = new Date(today);
+                checkDate.setDate(checkDate.getDate() - 1);
+                
+                while (true) {
+                    const dateStr = checkDate.toISOString().split('T')[0];
+                    const log = sorted.find(l => l.date === dateStr);
+                    
+                    if (log && log.actual >= log.required) {
+                        currentStreak++;
+                        checkDate.setDate(checkDate.getDate() - 1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+            
+            state.currentStreak = currentStreak;
+            if (currentStreak > state.bestStreak) {
+                state.bestStreak = currentStreak;
+            }
+            
+            document.getElementById('best-streak').textContent = state.bestStreak;
+            saveState();
+        }
+
+        // Update all UI elements
+        function updateUI() {
+            const currentNet = calculateNetWorth();
+            const projected = calculateProjected();
+            const requiredPace = calculateRequiredPace();
+            const last30Days = state.logs.slice(-30);
+            const avgDaily = last30Days.length > 0
+                ? last30Days.reduce((sum, log) => sum + log.actual, 0) / last30Days.length
+                : 0;
+            
+            // Net worth display
+            document.getElementById('current-networth').textContent = 
+                '$' + Math.round(currentNet).toLocaleString();
+            
+            // Progress to million
+            const percentComplete = (currentNet / CONFIG.TARGET_NET_WORTH) * 100;
+            document.getElementById('progress-fill').style.width = Math.min(percentComplete, 100) + '%';
+            document.getElementById('percent-to-million').textContent = 
+                Math.min(percentComplete, 100).toFixed(1) + '%';
+            
+            const remaining = CONFIG.TARGET_NET_WORTH - currentNet;
+            document.getElementById('remaining-amount').textContent = 
+                '$' + Math.max(0, remaining).toLocaleString() + ' left';
+            
+            // Metrics
+            document.getElementById('daily-required').textContent = requiredPace.toFixed(1);
+            document.getElementById('current-pace').textContent = avgDaily.toFixed(1);
+            document.getElementById('projected-amount').textContent = 
+                '$' + Math.round(projected).toLocaleString();
+            
+            // Update target date text
+            const targetYear = new Date().getFullYear() + 5;
+            document.getElementById('target-date').textContent = 
+                `TARGET: MILLIONAIRE BY ${targetYear}`;
+            
+            // Today's gap
+            const today = new Date().toISOString().split('T')[0];
+            const todayLog = state.logs.find(log => log.date === today);
+            
+            if (todayLog) {
+                const required = todayLog.required;
+                const actual = todayLog.actual;
+                const gap = required - actual;
+                
+                document.getElementById('required-label').textContent = required.toFixed(1) + ' hours';
+                document.getElementById('required-value').textContent = required.toFixed(1) + 'h';
+                document.getElementById('actual-label').textContent = actual.toFixed(1) + ' hours';
+                document.getElementById('actual-value').textContent = actual.toFixed(1) + 'h';
+                document.getElementById('actual-bar').style.width = (actual / required * 100) + '%';
+                
+                const gapDisplay = document.getElementById('gap-display');
+                if (actual >= required) {
+                    gapDisplay.className = 'gap-display green';
+                    gapDisplay.innerHTML = '✓ PLEDGE FULFILLED - NO INTEREST';
+                } else {
+                    gapDisplay.className = 'gap-display red';
+                    gapDisplay.innerHTML = `⚠ GAP: ${gap.toFixed(1)} HOURS - INTEREST ACCRUING`;
+                }
+            }
+            
+            // Penalty rate
+            const last7Days = state.logs.slice(-7);
+            const missedDays = last7Days.filter(log => log.actual < log.required).length;
+            const penaltyRate = (missedDays * 0.5).toFixed(1);
+            document.getElementById('penalty-rate').textContent = `+${penaltyRate}%`;
+            
+            // Regret engine
+            const missedHours = state.logs.reduce((sum, log) => 
+                sum + Math.max(0, log.required - log.actual), 0);
+            const moneyLost = missedHours * CONFIG.HOURLY_RATE;
+            
+            document.getElementById('regret-amount').textContent = 
+                '$' + Math.round(moneyLost).toLocaleString();
+            document.getElementById('regret-hours').textContent = 
+                Math.round(missedHours) + ' hours you\'ll never get back';
+            
+            // Compound bars
+            updateCompoundBars();
+            
+            // Reliquary
+            updateReliquary();
+        }
+
+        // Update compound interest visualizer
+        function updateCompoundBars() {
+            const container = document.getElementById('compound-bars');
+            container.innerHTML = '';
+            
+            // Show last 60 days (visible history)
+            const recent = state.logs.slice(-60);
+            
+            recent.forEach((log, index) => {
+                const bar = document.createElement('div');
+                bar.className = 'compound-bar';
+                
+                // Height based on hours worked (max 8 hours for scale)
+                const height = Math.min(60, (log.actual / 8) * 60);
+                bar.style.height = height + 'px';
+                
+                if (log.actual < log.required) {
+                    bar.classList.add('missed');
+                }
+                
+                bar.setAttribute('data-date', log.date);
+                bar.setAttribute('data-hours', log.actual.toFixed(1) + 'h');
+                
+                container.appendChild(bar);
+            });
+        }
+
+        // Update reliquary based on streak
+        function updateReliquary() {
+            const key = document.getElementById('reliquary-key');
+            const case_ = document.getElementById('reliquary-case');
+            const proximity = document.getElementById('proximity-counter');
+            
+            // Key moves up based on streak
+            const progress = Math.min(state.currentStreak / 30, 1);
+            const bottomPos = 50 + (progress * 200);
+            key.style.bottom = bottomPos + 'px';
+            
+            // Update proximity text
+            const daysNeeded = Math.max(0, 30 - state.currentStreak);
+            proximity.textContent = `DISTANCE TO KEY: ${daysNeeded} DAYS OF HONOR`;
+            proximity.style.color = state.currentStreak > 0 ? '#00ff00' : '#ff0000';
+            
+            // Update seal
+            const seal = document.getElementById('reliquary-seal');
+            const last7Days = state.logs.slice(-7);
+            const allSuccessful = last7Days.length === 7 && 
+                last7Days.every(log => log.actual >= log.required);
+            
+            if (allSuccessful) {
+                seal.innerHTML = '🔓 SEAL BROKEN';
+                seal.style.color = '#00ff00';
+                case_.style.transform = 'perspective(500px) rotateX(5deg)';
+            } else {
+                seal.innerHTML = '🔒 SEAL INTACT';
+                seal.style.color = '#ff0000';
+                case_.style.transform = 'none';
+            }
+        }
+
+        // Handle settlement at 9 PM
+        function settleLedger() {
+            const input = document.getElementById('hours-input');
+            const hours = parseFloat(input.value) || 0;
+            
+            if (hours < 0 || hours > 24) {
+                alert('Please enter a valid number of hours (0-24)');
+                return;
+            }
+            
+            const today = new Date().toISOString().split('T')[0];
+            const existingIndex = state.logs.findIndex(log => log.date === today);
+            
+            if (existingIndex >= 0) {
+                state.logs[existingIndex].actual = hours;
+                state.logs[existingIndex].excuse = hours < state.requiredDaily ? 'missed' : '';
+            } else {
+                state.logs.push({
+                    date: today,
+                    required: state.requiredDaily,
+                    actual: hours,
+                    excuse: hours < state.requiredDaily ? 'missed' : ''
+                });
+            }
+            
+            // Add tombstone if missed
+            if (hours < state.requiredDaily && input.value.trim()) {
+                addTombstone(input.value);
+            }
+            
+            // Update collector speech
+            const speech = document.getElementById('collector-speech');
+            if (hours >= state.requiredDaily) {
+                speech.innerHTML = '"You have paid your debt to tomorrow. The path is clear."';
+                speech.style.color = '#00ff00';
+            } else {
+                const gap = state.requiredDaily - hours;
+                speech.innerHTML = `"You are in arrears. ${gap.toFixed(1)} hours short. Interest applied."`;
+                speech.style.color = '#ff0000';
+            }
+            
+            saveState();
+            updateStreak();
+            updateUI();
+            
+            input.value = '';
+        }
+
+        // Add tombstone
+        function addTombstone(excuse) {
+            const graveyard = document.getElementById('graveyard');
+            const tombstone = document.createElement('div');
+            tombstone.className = 'tombstone';
+            
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tombstone-tooltip';
+            tooltip.textContent = excuse;
+            tombstone.appendChild(tooltip);
+            
+            graveyard.appendChild(tombstone);
+            state.tombstoneExcuses.push(excuse);
+            saveState();
+        }
+
+        // 9 PM reckoning check
+        function checkReckoning() {
+            const now = new Date();
+            const reckoningHour = 21;
+            const reckoningMinute = 0;
+            
+            const reckoningTime = new Date(now);
+            reckoningTime.setHours(reckoningHour, reckoningMinute, 0);
+            
+            if (now > reckoningTime) {
+                reckoningTime.setDate(reckoningTime.getDate() + 1);
+            }
+            
+            const diff = reckoningTime - now;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('reckoning-clock').textContent = 
+                `RECKONING IN: ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            
+            const isPastNine = now.getHours() > 21 || 
+                (now.getHours() === 21 && now.getMinutes() >= 0);
+            
+            document.getElementById('settle-button').disabled = !isPastNine;
+            
+            // Update door
+            const door = document.getElementById('collector-door');
+            const figure = document.getElementById('collector-figure');
+            
+            if (isPastNine) {
+                document.getElementById('reckoning-clock').style.color = '#00ff00';
+                door.classList.add('open');
+                figure.classList.add('visible');
+            } else {
+                document.getElementById('reckoning-clock').style.color = '#ff0000';
+                door.classList.remove('open');
+                figure.classList.remove('visible');
+            }
+        }
+
+        // Input validation
+        function setupInputValidation() {
+            const input = document.getElementById('hours-input');
+            input.addEventListener('input', function() {
+                const val = parseFloat(this.value) || 0;
+                if (val >= state.requiredDaily) {
+                    this.classList.add('met-goal');
+                    this.classList.remove('missed-goal');
+                } else {
+                    this.classList.add('missed-goal');
+                    this.classList.remove('met-goal');
+                }
+            });
+        }
+
+        // Initialize
+        function init() {
+            loadState();
+            updateStreak();
+            updateUI();
+            setupInputValidation();
+            
+            // Start timers
+            checkReckoning();
+            setInterval(checkReckoning, 1000);
+            
+            // Event listeners
+            document.getElementById('settle-button').addEventListener('click', settleLedger);
+            
+            // Load tombstones
+            state.tombstoneExcuses.forEach(excuse => addTombstone(excuse));
+        }
+
+        // Start everything
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

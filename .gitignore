@@ -1,0 +1,17 @@
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Personal ledger data (do not commit your real history)
+ledger_state.json
+
+# Optional local API override (copy from api-config.example.js)
+api-config.local.js

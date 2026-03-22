@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>█ THE LEDGER | IMMEDIATE PUNISHMENT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #00ff00;
+            --red: #ff0000;
+            --gold: #d4af37;
+            --white: #ffffff;
+            --black: #000000;
+            --tech: #00ccff;
+            --build: #ffaa00;
+            --brand: #ff66cc;
+            --psychology: #9966ff;
+            --money: #00ffaa;
+            --sales: #ff4444;
+            --communication: #ffaa44;
+            --leadership: #aa44ff;
+            --burnout-warning: #ff5500;
+            --missed-day: #330000;
+        }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* IMMEDIATE PUNISHMENT BANNER */
+        .punishment-banner {
+            background: linear-gradient(135deg, #330000, #550000);
+            border: 2px solid var(--red);
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: punishmentPulse 1s infinite;
+            display: none;
+        }
+
+        .punishment-banner.visible {
+            display: block;
+        }
+
+        @keyframes punishmentPulse {
+            0% { box-shadow: 0 0 10px rgba(255,0,0,0.3); }
+            50% { box-shadow: 0 0 50px rgba(255,0,0,0.8); }
+            100% { box-shadow: 0 0 10px rgba(255,0,0,0.3); }
+        }
+
+        .punishment-text {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--red);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 5px;
+        }
+
+        .punishment-damage {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--white);
+            text-shadow: 0 0 20px red;
+        }
+
+        .punishment-desc {
+            font-size: 14px;
+            color: var(--gold);
+        }
+
+        /* TIMELINE HEADER */
+        .timeline-header {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            border-bottom: 2px solid var(--gold);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .start-date {
+            text-align: left;
+        }
+
+        .start-label {
+            font-size: 12px;
+            color: var(--gold);
+            letter-spacing: 1px;
+        }
+
+        .start-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--red);
+        }
+
+        .target-display {
+            text-align: center;
+        }
+
+        .target-label {
+            font-size: 14px;
+            color: var(--gold);
+        }
+
+        .target-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--green);
+        }
+
+        .end-date {
+            text-align: right;
+        }
+
+        .end-label {
+            font-size: 12px;
+            color: var(--gold);
+            letter-spacing: 1px;
+        }
+
+        .end-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        /* 45-MINUTE WINDOW */
+        .window-header {
+            background: linear-gradient(135deg, #1a0000, #330000);
+            border: 2px solid var(--red);
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .window-header.open {
+            border-color: var(--green);
+            background: linear-gradient(135deg, #001a00, #003300);
+            animation: windowPulse 1s infinite;
+        }
+
+        @keyframes windowPulse {
+            0% { box-shadow: 0 0 10px rgba(0,255,0,0.3); }
+            50% { box-shadow: 0 0 30px rgba(0,255,0,0.6); }
+            100% { box-shadow: 0 0 10px rgba(0,255,0,0.3); }
+        }
+
+        .window-title {
+            font-size: 14px;
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 5px;
+        }
+
+        .window-timer {
+            font-size: 56px;
+            font-weight: 900;
+            font-family: monospace;
+            text-shadow: 0 0 20px currentColor;
+            margin: 10px 0;
+            line-height: 1.2;
+        }
+
+        .window-timer.red {
+            color: var(--red);
+        }
+
+        .window-timer.green {
+            color: var(--green);
+        }
+
+        .window-warning {
+            font-size: 14px;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .window-status {
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .window-status.closed {
+            color: var(--red);
+        }
+
+        .window-status.open {
+            color: var(--green);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* MAIN GRID */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* LEFT PANEL */
+        .left-panel {
+            background: linear-gradient(135deg, #1a120a, #2a1e0f);
+            border: 1px solid var(--gold);
+            padding: 20px;
+        }
+
+        .reckoning-clock {
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            padding: 15px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            margin-bottom: 20px;
+            font-family: monospace;
+        }
+
+        .collector-chamber {
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .collector-door {
+            width: 150px;
+            height: 200px;
+            background: #4a3729;
+            border-radius: 10px;
+            position: relative;
+            margin-bottom: 15px;
+            transition: all 0.5s ease;
+        }
+
+        .collector-door::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: var(--gold);
+            border-radius: 50%;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+        }
+
+        .collector-door.open {
+            transform: rotateY(180deg);
+            opacity: 0.5;
+        }
+
+        .collector-figure {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .collector-figure.visible {
+            opacity: 1;
+        }
+
+        .collector-head {
+            width: 40px;
+            height: 40px;
+            background: #111;
+            border-radius: 50%;
+            margin: 0 auto;
+            border: 2px solid var(--gold);
+        }
+
+        .collector-body {
+            width: 60px;
+            height: 80px;
+            background: #111;
+            margin: 5px auto;
+            border: 1px solid var(--gold);
+        }
+
+        .collector-speech {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 14px;
+            color: var(--gold);
+            min-height: 60px;
+            text-align: center;
+        }
+
+        /* BURNOUT METER */
+        .burnout-meter {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid var(--burnout-warning);
+            background: rgba(255,85,0,0.1);
+        }
+
+        .burnout-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .burnout-bar-bg {
+            width: 100%;
+            height: 10px;
+            background: #222;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .burnout-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--green), var(--burnout-warning), var(--red));
+            transition: width 0.3s ease;
+        }
+
+        .burnout-warning {
+            font-size: 10px;
+            margin-top: 5px;
+            color: var(--burnout-warning);
+        }
+
+        .penalty-box {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid rgba(255,0,0,0.3);
+            background: rgba(255,0,0,0.05);
+            text-align: center;
+        }
+
+        /* CENTER PANEL */
+        .center-panel {
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            border: 1px solid var(--gold);
+            padding: 20px;
+            max-height: 800px;
+            overflow-y: auto;
+        }
+
+        .center-panel::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .center-panel::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        .center-panel::-webkit-scrollbar-thumb {
+            background: var(--gold);
+        }
+
+        .progress-section {
+            margin-bottom: 25px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 25px;
+            background: #222;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--green));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .timeline-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 10px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: var(--gold);
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .stat-value.red {
+            color: var(--red);
+        }
+
+        .domains-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .domain-card {
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 15px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .domain-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .domain-card.tech::before { background: var(--tech); }
+        .domain-card.build::before { background: var(--build); }
+        .domain-card.brand::before { background: var(--brand); }
+        .domain-card.psychology::before { background: var(--psychology); }
+        .domain-card.money::before { background: var(--money); }
+        .domain-card.sales::before { background: var(--sales); }
+        .domain-card.communication::before { background: var(--communication); }
+        .domain-card.leadership::before { background: var(--leadership); }
+
+        .domain-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .domain-name {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .domain-multiplier {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .domain-hours {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 5px 0;
+        }
+
+        .domain-target {
+            font-size: 10px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 5px;
+        }
+
+        .domain-bar-bg {
+            width: 100%;
+            height: 4px;
+            background: #222;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 5px 0;
+        }
+
+        .domain-bar-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .tech .domain-bar-fill { background: var(--tech); }
+        .build .domain-bar-fill { background: var(--build); }
+        .brand .domain-bar-fill { background: var(--brand); }
+        .psychology .domain-bar-fill { background: var(--psychology); }
+        .money .domain-bar-fill { background: var(--money); }
+        .sales .domain-bar-fill { background: var(--sales); }
+        .communication .domain-bar-fill { background: var(--communication); }
+        .leadership .domain-bar-fill { background: var(--leadership); }
+
+        .domain-value {
+            text-align: right;
+            font-size: 11px;
+            color: var(--gold);
+        }
+
+        .input-section {
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .input-title {
+            font-size: 12px;
+            color: var(--gold);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .focus-warning {
+            background: rgba(255,85,0,0.2);
+            border: 1px solid var(--burnout-warning);
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            color: var(--burnout-warning);
+            display: none;
+        }
+
+        .domain-input-row {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+            opacity: 0.5;
+            transition: opacity 0.2s ease;
+        }
+
+        .domain-input-row.active {
+            opacity: 1;
+        }
+
+        .domain-input-row.disabled {
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        .domain-input {
+            background: #111;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--white);
+            padding: 8px;
+            border-radius: 3px;
+        }
+
+        .learn-input {
+            background: #111;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--white);
+            padding: 8px;
+            border-radius: 3px;
+        }
+
+        .settle-button {
+            width: 100%;
+            padding: 15px;
+            background: var(--gold);
+            color: var(--black);
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 16px;
+            letter-spacing: 2px;
+            transition: all 0.2s ease;
+        }
+
+        .clear-today-button {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            color: var(--red);
+            font-weight: 700;
+            border: 1px solid rgba(255, 0, 0, 0.6);
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            transition: all 0.2s ease;
+        }
+
+        .clear-today-button:hover {
+            background: rgba(255, 0, 0, 0.08);
+            box-shadow: 0 0 18px rgba(255, 0, 0, 0.35);
+        }
+
+        .settle-button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .settle-button:not(:disabled):hover {
+            background: #e5c158;
+            box-shadow: 0 0 30px gold;
+            transform: scale(1.02);
+        }
+
+        /* RIGHT PANEL */
+        .right-panel {
+            background: linear-gradient(135deg, #1a0f0a, #2d1a12);
+            border: 1px solid var(--gold);
+            padding: 20px;
+        }
+
+        .reliquary {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .reliquary-title {
+            font-size: 14px;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .reliquary-case {
+            width: 200px;
+            height: 250px;
+            margin: 0 auto 15px;
+            border: 2px solid rgba(212, 175, 55, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reliquary-key {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            transition: bottom 0.5s ease;
+        }
+
+        .key-head {
+            width: 25px;
+            height: 25px;
+            background: var(--gold);
+            border-radius: 50%;
+            margin: 0 auto;
+            box-shadow: 0 0 20px gold;
+        }
+
+        .key-shaft {
+            width: 12px;
+            height: 50px;
+            background: var(--gold);
+            margin: 5px auto;
+        }
+
+        .regret-box {
+            padding: 15px;
+            border: 1px solid rgba(255,0,0,0.3);
+            background: rgba(255,0,0,0.05);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .regret-box.punished {
+            border-color: var(--red);
+            background: rgba(255,0,0,0.2);
+            animation: regretPulse 0.5s;
+        }
+
+        @keyframes regretPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); background: rgba(255,0,0,0.4); }
+            100% { transform: scale(1); }
+        }
+
+        .compound-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 60px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .compound-bar {
+            width: 15px;
+            min-width: 15px;
+            transition: height 0.3s ease;
+        }
+
+        .compound-bar.missed-today {
+            background: #000 !important;
+            border: 2px solid var(--red) !important;
+            animation: missedPulse 1s infinite;
+        }
+
+        @keyframes missedPulse {
+            0% { border-color: var(--red); opacity: 1; }
+            50% { border-color: #ff6666; opacity: 0.5; }
+            100% { border-color: var(--red); opacity: 1; }
+        }
+
+        .graveyard {
+            height: 60px;
+            display: flex;
+            gap: 5px;
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .tombstone {
+            width: 40px;
+            height: 50px;
+            background: #333;
+            border-radius: 5px 5px 0 0;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .tombstone::before {
+            content: 'RIP';
+            position: absolute;
+            top: 5px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 8px;
+        }
+
+        .footer-mantra {
+            margin-top: 20px;
+            padding: 15px;
+            border-top: 1px solid var(--gold);
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            color: var(--gold);
+            font-size: 14px;
+        }
+
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- IMMEDIATE PUNISHMENT BANNER -->
+        <div class="punishment-banner" id="punishment-banner">
+            <div class="punishment-text">⚡ YOU DID NOTHING ⚡</div>
+            <div class="punishment-damage" id="punishment-damage">-$0</div>
+            <div class="punishment-desc">This damage is permanent. The day is gone forever.</div>
+        </div>
+
+        <!-- TIMELINE HEADER -->
+        <div class="timeline-header">
+            <div class="start-date">
+                <div class="start-label">START</div>
+                <div class="start-value" id="start-date">March 15, 2026</div>
+            </div>
+            <div class="target-display">
+                <div class="target-label">TARGET</div>
+                <div class="target-value" id="target-networth">$0</div>
+            </div>
+            <div class="end-date">
+                <div class="end-label">DEADLINE</div>
+                <div class="end-value" id="end-date">Dec 18, 2030</div>
+            </div>
+        </div>
+
+        <!-- 45-MINUTE RECKONING WINDOW -->
+        <div class="window-header" id="window-header">
+            <div class="window-title">⚡ THE RECKONING WINDOW ⚡</div>
+            <div class="window-timer red" id="window-timer">21:00:00</div>
+            <div class="window-warning" id="window-warning">
+                You have exactly 45 minutes to settle the ledger
+            </div>
+            <div class="window-status closed" id="window-status">WINDOW CLOSED</div>
+        </div>
+
+        <!-- MAIN GRID -->
+        <div class="main-grid">
+            <!-- LEFT PANEL -->
+            <div class="left-panel">
+                <div class="reckoning-clock" id="reckoning-clock">RECKONING IN: 00:00:00</div>
+                
+                <div class="collector-chamber">
+                    <div class="collector-door" id="collector-door"></div>
+                    <div class="collector-figure" id="collector-figure">
+                        <div class="collector-head"></div>
+                        <div class="collector-body"></div>
+                    </div>
+                    <div class="collector-speech" id="collector-speech">
+                        "From nothing, you build. The ledger watches."
+                    </div>
+                </div>
+
+                <!-- BURNOUT METER -->
+                <div class="burnout-meter">
+                    <div class="burnout-label">
+                        <span>BURNOUT RISK</span>
+                        <span id="burnout-percent">0%</span>
+                    </div>
+                    <div class="burnout-bar-bg">
+                        <div class="burnout-fill" id="burnout-fill" style="width: 0%;"></div>
+                    </div>
+                    <div class="burnout-warning" id="burnout-warning">
+                        Focus on 3 domains max to avoid burnout
+                    </div>
+                </div>
+
+                <div class="penalty-box">
+                    <div class="penalty-label">PENALTY RATE</div>
+                    <div class="penalty-value" id="penalty-rate">+0.0%</div>
+                </div>
+            </div>
+
+            <!-- CENTER PANEL -->
+            <div class="center-panel">
+                <!-- PROGRESS SECTION -->
+                <div class="progress-section">
+                    <div class="progress-label">
+                        <span>JOURNEY TO $1,000,000</span>
+                        <span id="progress-percent">0%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <!-- TIMELINE STATS -->
+                <div class="timeline-stats">
+                    <div class="stat-card">
+                        <div class="stat-label">DAYS LEFT</div>
+                        <div class="stat-value" id="days-left">1734</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">CURRENT STREAK</div>
+                        <div class="stat-value" id="streak-value">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">BEST STREAK</div>
+                        <div class="stat-value" id="best-streak">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">TOTAL HOURS</div>
+                        <div class="stat-value" id="total-hours">0</div>
+                    </div>
+                </div>
+
+                <!-- DOMAINS GRID -->
+                <div class="domains-grid" id="domains-grid"></div>
+
+                <!-- INPUT SECTION -->
+                <div class="input-section">
+                    <div class="input-title">RECORD TODAY'S INVESTMENT (MAX 3 DOMAINS)</div>
+                    <div class="focus-warning" id="focus-warning">
+                        ⚠ You can only focus on 3 domains per day. Choose wisely.
+                    </div>
+                    <div id="inputs-container"></div>
+                    <button class="settle-button" id="settle-button" disabled>SETTLE THE LEDGER</button>
+                    <button class="clear-today-button" id="clear-today-button" type="button">CLEAR TODAY (UNDO ENTRY)</button>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL -->
+            <div class="right-panel">
+                <div class="reliquary">
+                    <div class="reliquary-title">THE KEY TO FREEDOM</div>
+                    <div class="reliquary-case">
+                        <div class="reliquary-key" id="reliquary-key">
+                            <div class="key-head"></div>
+                            <div class="key-shaft"></div>
+                        </div>
+                    </div>
+                    <div id="proximity-text">30 DAY STREAK NEEDED</div>
+                </div>
+
+                <div class="regret-box" id="regret-box">
+                    <div class="penalty-label">OPPORTUNITY COST</div>
+                    <div class="penalty-value" id="regret-amount">$0</div>
+                    <div id="regret-hours">0 hours wasted</div>
+                </div>
+
+                <div class="compound-bars" id="compound-bars"></div>
+                <div class="graveyard" id="graveyard"></div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer-mantra">
+            "You start at zero. Every day is a choice. Dec 18, 2030 does not move. You have 45 minutes each day to prove you're serious."
+        </div>
+    </div>
+
+    <script src="/api-config.js"></script>
+    <script>
+        // ===========================================
+        // 2030 EDITION - IMMEDIATE PUNISHMENT
+        // ===========================================
+
+        // FIXED DATES
+        const START_DATE = '2026-03-15';
+        const END_DATE = '2030-12-18';
+        const TOTAL_DAYS = Math.ceil((new Date(END_DATE) - new Date(START_DATE)) / (1000 * 60 * 60 * 24));
+
+        const DOMAINS = [
+            { id: 'tech', name: 'TECH', color: '#00ccff', multiplier: 1.0, target: 2000, description: 'Build agentic SaaS' },
+            { id: 'build', name: 'BUILD', color: '#ffaa00', multiplier: 1.2, target: 1500, description: 'Create products' },
+            { id: 'brand', name: 'BRAND', color: '#ff66cc', multiplier: 1.5, target: 1000, description: 'Personal brand' },
+            { id: 'psychology', name: 'PSYCHOLOGY', color: '#9966ff', multiplier: 1.3, target: 800, description: 'Human nature' },
+            { id: 'money', name: 'MONEY', color: '#00ffaa', multiplier: 2.0, target: 600, description: 'Financial intelligence' },
+            { id: 'sales', name: 'SALES', color: '#ff4444', multiplier: 2.5, target: 1000, description: 'Close deals' },
+            { id: 'communication', name: 'COMMUNICATION', color: '#ffaa44', multiplier: 1.8, target: 800, description: 'Persuasion' },
+            { id: 'leadership', name: 'LEADERSHIP', color: '#aa44ff', multiplier: 2.2, target: 800, description: 'Lead others' }
+        ];
+
+        const CONFIG = {
+            TARGET_NET_WORTH: 1000000,
+            BASE_HOURLY_RATE: 50,
+            MAX_DAILY_DOMAINS: 3,
+            STREAK_FOR_KEY: 30,
+            MISSED_DAY_PENALTY: 200 // $200 penalty for doing nothing
+        };
+
+        // Backend API base: set window.THE_LEDGER_API_BASE in /api-config.js (Vercel + hosted API)
+        const API_BASE = (() => {
+            const fromConfig = (typeof window !== 'undefined' && window.THE_LEDGER_API_BASE)
+                ? String(window.THE_LEDGER_API_BASE).trim()
+                : '';
+            if (fromConfig) return fromConfig;
+            if (typeof location !== 'undefined' && (location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+                return 'http://localhost:8000';
+            }
+            console.warn('[Ledger] Set THE_LEDGER_API_BASE in api-config.js to your deployed Flask URL.');
+            return '';
+        })();
+
+        // State
+        let state = {
+            logs: [],
+            domainHours: {},
+            currentStreak: 0,
+            bestStreak: 0,
+            tombstoneExcuses: [],
+            missedDays: 0,
+            totalPenalty: 0,
+            lastProcessedDate: null
+        };
+
+        // Initialize all domains to ZERO
+        DOMAINS.forEach(d => state.domainHours[d.id] = 0);
+
+        // Load state: prefer backend, fall back to localStorage
+        async function loadState() {
+            // Read local state without trusting it blindly.
+            let localSaved = null;
+            try {
+                const raw = localStorage.getItem('ledger_punishment');
+                if (raw) localSaved = JSON.parse(raw);
+            } catch (e) {
+                console.warn('Failed to read localStorage state', e);
+            }
+
+            const localLogsCount = (localSaved && Array.isArray(localSaved.logs)) ? localSaved.logs.length : 0;
+
+            // Try backend first so all devices share the same state.
+            try {
+                const res = await fetch(`${API_BASE}/state`);
+                if (res.ok) {
+                    const serverState = await res.json();
+                    const backendLogsCount = (serverState && Array.isArray(serverState.logs)) ? serverState.logs.length : 0;
+
+                    // If backend is empty but local has history, seed backend from local once.
+                    if (backendLogsCount === 0 && localLogsCount > 0 && localSaved) {
+                        state = localSaved;
+
+                        fetch(`${API_BASE}/state`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(state)
+                        }).catch(() => {});
+                    } else {
+                        // Otherwise, always trust backend (prevents stale Cloudflare-origin localStorage from showing “trash”).
+                        state = serverState || state;
+                    }
+
+                    // Ensure all domains exist in domainHours
+                    DOMAINS.forEach(d => {
+                        if (!state.domainHours || typeof state.domainHours[d.id] !== 'number') {
+                            state.domainHours = state.domainHours || {};
+                            state.domainHours[d.id] = 0;
+                        }
+                    });
+
+                    if (typeof state.lastProcessedDate === 'undefined') {
+                        state.lastProcessedDate = null;
+                    }
+
+                    // Sync localStorage to the chosen state so next load is consistent.
+                    localStorage.setItem('ledger_punishment', JSON.stringify(state));
+
+                    // Debug info for quick diagnosis (see console) if ?debug=1
+                    try {
+                        const params = new URLSearchParams(window.location.search);
+                        const debugParam = params.get('debug');
+                        const debugOn = String(debugParam || '').startsWith('1');
+                        if (debugOn) {
+                            console.log('[Ledger Debug]', {
+                                apiBase: API_BASE,
+                                localLogsCount,
+                                backendLogsCount,
+                                chosen: (backendLogsCount === 0 && localLogsCount > 0 && localSaved) ? 'local->backend' : 'backend',
+                                stateLogsCount: Array.isArray(state.logs) ? state.logs.length : null
+                            });
+                        }
+                    } catch (_) {}
+
+                    return;
+                }
+            } catch (e) {
+                console.warn('Backend unavailable, using localStorage only', e);
+            }
+
+            // Backend is unreachable: use local state if present.
+            if (localSaved) {
+                state = localSaved;
+                if (typeof state.lastProcessedDate === 'undefined') {
+                    state.lastProcessedDate = null;
+                }
+                DOMAINS.forEach(d => {
+                    if (!state.domainHours || typeof state.domainHours[d.id] !== 'number') {
+                        state.domainHours = state.domainHours || {};
+                        state.domainHours[d.id] = 0;
+                    }
+                });
+            }
+
+            // Debug info for quick diagnosis (see console)
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const debugParam = params.get('debug');
+                const debugOn = String(debugParam || '').startsWith('1');
+                if (debugOn) {
+                    console.log('[Ledger Debug]', {
+                        apiBase: API_BASE,
+                        localLogsCount: localLogsCount,
+                        stateLogsCount: Array.isArray(state.logs) ? state.logs.length : null
+                    });
+                }
+            } catch (_) {}
+        }
+
+        // Save state: write to both localStorage and backend
+        function saveState() {
+            localStorage.setItem('ledger_punishment', JSON.stringify(state));
+
+            // Fire-and-forget POST to backend; UI shouldn't block on this
+            fetch(`${API_BASE}/state`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(state)
+            }).catch(err => {
+                console.warn('Failed to save state to backend', err);
+            });
+        }
+
+        // Helper: today as YYYY-MM-DD (LOCAL, not UTC)
+        function getTodayStr() {
+            const d = new Date();
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        // Helper: window bounds for today (21:00:00–21:45:00)
+        function getWindowBounds() {
+            const now = new Date();
+            const start = new Date(now);
+            start.setHours(21, 0, 0, 0);
+            const close = new Date(now);
+            close.setHours(21, 50, 0, 0);
+            return { start, close };
+        }
+
+        function isWindowOpen() {
+            const now = new Date();
+            const { start, close } = getWindowBounds();
+            return now >= start && now <= close;
+        }
+
+        function isWindowClosed() {
+            const now = new Date();
+            const { close } = getWindowBounds();
+            return now > close;
+        }
+
+        function getTodayTotalHours() {
+            const today = getTodayStr();
+            const log = state.logs.find(l => l.date === today);
+            return log ? (log.total || 0) : 0;
+        }
+
+        // Calculate days remaining
+        function getDaysRemaining() {
+            const today = new Date();
+            const end = new Date(END_DATE);
+            const diff = end - today;
+            return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+        }
+
+        // Calculate wealth (including penalties)
+        function calculateWealth() {
+            let total = 0;
+            DOMAINS.forEach(domain => {
+                const hours = state.domainHours[domain.id] || 0;
+                total += hours * CONFIG.BASE_HOURLY_RATE * domain.multiplier;
+            });
+            // Subtract penalties
+            return Math.max(0, total - state.totalPenalty);
+        }
+
+        // Calculate burnout
+        function calculateBurnout() {
+            const last7Days = state.logs.slice(-7);
+            if (last7Days.length === 0) return 0;
+            
+            let totalDomains = 0;
+            last7Days.forEach(log => {
+                totalDomains += Object.keys(log.domains || {}).filter(d => log.domains[d] > 0).length;
+            });
+            
+            const avgDomains = totalDomains / last7Days.length;
+            return Math.min(100, (avgDomains / CONFIG.MAX_DAILY_DOMAINS) * 100);
+        }
+
+        // Update streak
+        function updateStreak() {
+            // Streak should reflect consecutive "good" days up to:
+            // - today (if today is settled and total>0)
+            // - otherwise, up to yesterday (so seeded history still shows progress before you settle today)
+            function getLocalDateStr(d) {
+                const yyyy = d.getFullYear();
+                const mm = String(d.getMonth() + 1).padStart(2, '0');
+                const dd = String(d.getDate()).padStart(2, '0');
+                return `${yyyy}-${mm}-${dd}`;
+            }
+
+            const today = getTodayStr();
+            const todayLog = state.logs.find(l => l.date === today);
+
+            const endDate = (todayLog && todayLog.total > 0)
+                ? new Date(today)
+                : (() => {
+                    const y = new Date();
+                    y.setDate(y.getDate() - 1);
+                    return y;
+                })();
+
+            const endDateStr = getLocalDateStr(endDate);
+            const endLog = state.logs.find(l => l.date === endDateStr);
+
+            if (!endLog || endLog.total <= 0) {
+                state.currentStreak = 0;
+                return;
+            }
+
+            let streak = 1;
+            let checkDate = new Date(endDateStr);
+            checkDate.setDate(checkDate.getDate() - 1);
+
+            while (true) {
+                const dateStr = getLocalDateStr(checkDate);
+                const log = state.logs.find(l => l.date === dateStr);
+
+                if (log && log.total > 0) {
+                    streak++;
+                    checkDate.setDate(checkDate.getDate() - 1);
+                } else {
+                    break;
+                }
+            }
+
+            state.currentStreak = streak;
+            if (streak > state.bestStreak) {
+                state.bestStreak = streak;
+            }
+        }
+
+        // Core penalty application for a specific date
+        function applyPenalty(forDateStr) {
+            // Prevent double penalties for the same day
+            if (state.lastProcessedDate === forDateStr) {
+                return;
+            }
+
+            const todayLog = state.logs.find(l => l.date === forDateStr);
+            const totalHours = todayLog ? (todayLog.total || 0) : 0;
+
+            // Only penalize true zeros
+            if (totalHours > 0) {
+                return;
+            }
+
+            state.missedDays += 1;
+            const penalty = CONFIG.MISSED_DAY_PENALTY;
+            state.totalPenalty += penalty;
+            state.lastProcessedDate = forDateStr;
+
+            // Ensure log exists so visuals can mark the day as missed
+            if (!todayLog) {
+                state.logs.push({
+                    date: forDateStr,
+                    domains: {},
+                    total: 0,
+                    domainCount: 0,
+                    penalty
+                });
+            } else {
+                todayLog.penalty = (todayLog.penalty || 0) + penalty;
+            }
+
+            // Visual punishment: banner
+            const banner = document.getElementById('punishment-banner');
+            const damageEl = document.getElementById('punishment-damage');
+            if (banner && damageEl) {
+                damageEl.textContent = `-$${penalty.toLocaleString()}`;
+                banner.classList.add('visible');
+            }
+
+            // Flash regret box
+            const regretBox = document.getElementById('regret-box');
+            if (regretBox) {
+                regretBox.classList.add('punished');
+                setTimeout(() => {
+                    regretBox.classList.remove('punished');
+                }, 1000);
+            }
+
+            // Tombstone record
+            addTombstone('did nothing');
+
+            // Collector commentary
+            const speechEl = document.getElementById('collector-speech');
+            if (speechEl) {
+                speechEl.innerHTML = '"You did nothing. The ledger has taken its toll."';
+                speechEl.style.color = 'var(--red)';
+            }
+
+            // Mark today's compound bar as wounded via UI refresh
+            console.log('Miss penalty applied for', forDateStr);
+            saveState();
+            updateUI();
+        }
+
+        // Backwards-compatible wrapper name if used elsewhere
+        function applyPunishment() {
+            applyPenalty(getTodayStr());
+        }
+
+        // Core miss-detection logic, run on interval and on load
+        function checkAndApplyMissPenalty() {
+            const todayStr = getTodayStr();
+
+            // Only once per day
+            if (state.lastProcessedDate === todayStr) {
+                return;
+            }
+
+            // Only after the 21:45:00 close
+            if (!isWindowClosed()) {
+                return;
+            }
+
+            const totalToday = getTodayTotalHours();
+            if (totalToday === 0) {
+                applyPenalty(todayStr);
+            }
+        }
+
+        function checkReckoning() {
+            const now = new Date();
+            const { start: reckoningStart, close: reckoningEnd } = getWindowBounds();
+            const inWindow = now >= reckoningStart && now <= reckoningEnd;
+            
+            let targetTime;
+            
+            if (inWindow) {
+                targetTime = reckoningEnd;
+            } else if (now < reckoningStart) {
+                targetTime = reckoningStart;
+            } else {
+                targetTime = reckoningStart;
+            }
+            
+            const diff = targetTime - now;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            const timerEl = document.getElementById('window-timer');
+            timerEl.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            
+            const windowHeader = document.getElementById('window-header');
+            const statusEl = document.getElementById('window-status');
+            const warningEl = document.getElementById('window-warning');
+            
+            if (inWindow) {
+                windowHeader.classList.add('open');
+                windowHeader.classList.remove('closed');
+                timerEl.classList.add('green');
+                timerEl.classList.remove('red');
+                statusEl.textContent = '⚡ WINDOW OPEN - 45 MINUTES REMAINING ⚡';
+                statusEl.classList.add('open');
+                statusEl.classList.remove('closed');
+                warningEl.innerHTML = '⚠ You have 45 minutes to record today. After that, the day is lost forever.';
+                document.getElementById('settle-button').disabled = false;
+
+                // Enable inputs when window is open
+                document.querySelectorAll('.domain-input-row').forEach(row => {
+                    row.classList.remove('disabled');
+                });
+                document.querySelectorAll('.domain-input').forEach(input => {
+                    input.disabled = false;
+                });
+                document.querySelectorAll('.learn-input').forEach(input => {
+                    input.disabled = false;
+                });
+
+                document.getElementById('collector-door').classList.add('open');
+                document.getElementById('collector-figure').classList.add('visible');
+                
+            } else {
+                windowHeader.classList.remove('open');
+                windowHeader.classList.add('closed');
+                timerEl.classList.add('red');
+                timerEl.classList.remove('green');
+                
+                if (now < reckoningStart) {
+                    statusEl.textContent = '⏳ NEXT WINDOW';
+                    warningEl.innerHTML = `Next window opens at 9:00 PM`;
+                } else {
+                    statusEl.textContent = '🔒 DAY LOCKED';
+                    warningEl.innerHTML = `❌ Today is locked. You cannot recover it.`;
+                }
+                
+                statusEl.classList.remove('open');
+                statusEl.classList.add('closed');
+                document.getElementById('settle-button').disabled = true;
+
+                // Disable inputs before window opens and after it closes
+                document.querySelectorAll('.domain-input-row').forEach(row => {
+                    row.classList.add('disabled');
+                });
+                document.querySelectorAll('.domain-input').forEach(input => {
+                    input.disabled = true;
+                });
+                document.querySelectorAll('.learn-input').forEach(input => {
+                    input.disabled = true;
+                });
+            }
+            
+            const smallClock = document.getElementById('reckoning-clock');
+            if (smallClock) {
+                smallClock.textContent = `RECKONING: ${timerEl.textContent}`;
+            }
+        }
+
+        // Render domains
+        function renderDomains() {
+            const grid = document.getElementById('domains-grid');
+            grid.innerHTML = '';
+            
+            DOMAINS.forEach(domain => {
+                const hours = state.domainHours[domain.id] || 0;
+                const percentToTarget = (hours / domain.target) * 100;
+                const value = hours * CONFIG.BASE_HOURLY_RATE * domain.multiplier;
+                
+                const card = document.createElement('div');
+                card.className = `domain-card ${domain.id}`;
+                card.innerHTML = `
+                    <div class="domain-header">
+                        <span class="domain-name">${domain.name}</span>
+                        <span class="domain-multiplier">${domain.multiplier}x</span>
+                    </div>
+                    <div class="domain-hours">${Math.round(hours)}h</div>
+                    <div class="domain-target">target: ${domain.target}h · ${domain.description}</div>
+                    <div class="domain-bar-bg">
+                        <div class="domain-bar-fill" style="width: ${Math.min(percentToTarget, 100)}%;"></div>
+                    </div>
+                    <div class="domain-value">$${Math.round(value).toLocaleString()}</div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Render input fields
+        function renderInputs() {
+            const container = document.getElementById('inputs-container');
+            container.innerHTML = '';
+            
+            DOMAINS.forEach(domain => {
+                const row = document.createElement('div');
+                row.className = 'domain-input-row';
+                row.id = `row-${domain.id}`;
+                row.innerHTML = `
+                    <span style="color: ${domain.color};">${domain.name}</span>
+                    <input type="number" class="domain-input" id="input-${domain.id}" min="0" max="8" step="0.5" value="0">
+                    <input type="text" class="learn-input" id="learn-${domain.id}" placeholder="topic - sub-topic (optional)" maxlength="80">
+                `;
+                container.appendChild(row);
+            });
+
+            const inputs = document.querySelectorAll('.domain-input');
+            inputs.forEach(input => {
+                input.addEventListener('input', enforceDomainLimit);
+            });
+        }
+
+        // Enforce max 3 domains
+        function enforceDomainLimit() {
+            const inputs = document.querySelectorAll('.domain-input');
+            const rows = document.querySelectorAll('.domain-input-row');
+            const warning = document.getElementById('focus-warning');
+            
+            let activeCount = 0;
+            inputs.forEach(input => {
+                if (parseFloat(input.value) > 0) activeCount++;
+            });
+            
+            if (activeCount > CONFIG.MAX_DAILY_DOMAINS) {
+                warning.style.display = 'block';
+                warning.style.color = 'var(--red)';
+                warning.innerHTML = `⚠ EXCEEDED: Max ${CONFIG.MAX_DAILY_DOMAINS} domains. Remove some entries.`;
+                
+                inputs.forEach(input => {
+                    if (parseFloat(input.value) > 0) {
+                        input.style.borderColor = 'var(--red)';
+                    }
+                });
+            } else {
+                warning.style.display = 'none';
+                inputs.forEach(input => {
+                    input.style.borderColor = 'rgba(212, 175, 55, 0.3)';
+                });
+            }
+            
+            rows.forEach((row, index) => {
+                const input = inputs[index];
+                if (parseFloat(input.value) > 0) {
+                    row.classList.add('active');
+                } else {
+                    row.classList.remove('active');
+                }
+            });
+        }
+
+        // Settle function
+        function settle() {
+            // Check domain limit
+            const inputs = document.querySelectorAll('.domain-input');
+            let activeCount = 0;
+            inputs.forEach(input => {
+                if (parseFloat(input.value) > 0) activeCount++;
+            });
+            
+            if (activeCount > CONFIG.MAX_DAILY_DOMAINS) {
+                alert(`You can only focus on ${CONFIG.MAX_DAILY_DOMAINS} domains per day. Reduce your entries.`);
+                return;
+            }
+            
+            const today = getTodayStr();
+            
+            // Check if already logged today
+            const existingIndex = state.logs.findIndex(l => l.date === today);
+            if (existingIndex >= 0) {
+                alert('You already settled today. The window is for today only.');
+                return;
+            }
+            
+            let totalHours = 0;
+            const domainEntries = {};
+            const learningEntries = {};
+            
+            DOMAINS.forEach(domain => {
+                const input = document.getElementById(`input-${domain.id}`);
+                const hours = parseFloat(input.value) || 0;
+                if (hours > 0) {
+                    domainEntries[domain.id] = hours;
+                    totalHours += hours;
+                    state.domainHours[domain.id] = (state.domainHours[domain.id] || 0) + hours;
+
+                    const learnEl = document.getElementById(`learn-${domain.id}`);
+                    const learnText = (learnEl && learnEl.value) ? learnEl.value.trim() : '';
+                    if (learnText) {
+                        // Accept formats like: "topic - sub-topic" or "topic/sub-topic"
+                        const parts = learnText.split(/[-–—\/|,]+/).map(s => s.trim()).filter(Boolean);
+                        const topic = parts[0] || '';
+                        const subtopic = parts.slice(1).join(' - ');
+                        if (topic) {
+                            learningEntries[domain.id] = { topic, subtopic };
+                        }
+                    }
+                }
+            });
+
+            const logEntry = {
+                date: today,
+                domains: domainEntries,
+                total: totalHours,
+                domainCount: activeCount
+            };
+            if (Object.keys(learningEntries).length > 0) {
+                logEntry.learning = learningEntries;
+            }
+            state.logs.push(logEntry);
+            
+            updateStreak();
+            
+            // Hide punishment banner if visible
+            document.getElementById('punishment-banner').classList.remove('visible');
+            
+            const speech = document.getElementById('collector-speech');
+            if (totalHours >= 6) {
+                speech.innerHTML = '"Exceptional focus. This is how millionaires are made."';
+                speech.style.color = '#00ff00';
+            } else if (totalHours >= 3) {
+                speech.innerHTML = `"${totalHours} hours. Consistent. Keep showing up."`;
+                speech.style.color = '#ffaa00';
+            } else if (totalHours > 0) {
+                speech.innerHTML = `"${totalHours} hours. Better than zero, but barely."`;
+                speech.style.color = '#ff0000';
+            }
+            
+            inputs.forEach(input => input.value = '0');
+            document.querySelectorAll('.learn-input').forEach(input => input.value = '');
+            
+            saveState();
+            updateUI();
+        }
+
+        // Clear today's entry so you can fill again (does NOT remove penalties)
+        function clearTodayData() {
+            // Always reset inputs visually
+            document.querySelectorAll('.domain-input').forEach(input => {
+                input.value = '0';
+            });
+            document.querySelectorAll('.learn-input').forEach(input => input.value = '');
+            enforceDomainLimit();
+
+            const today = getTodayStr();
+            const idx = state.logs.findIndex(l => l.date === today);
+            if (idx < 0) {
+                console.log('No today log to clear:', today);
+                return;
+            }
+
+            const log = state.logs[idx];
+
+            // If today is a penalized/zero day, we don't erase it (penalties are permanent)
+            if ((log.penalty && log.penalty > 0) || (log.total || 0) === 0) {
+                alert('Today is already locked/penalized. Penalties are permanent — you can only log within the open window.');
+                console.log('Refused to clear penalized/zero log for', today, log);
+                return;
+            }
+
+            // Roll back cumulative domain hours added by today
+            if (log.domains) {
+                Object.entries(log.domains).forEach(([domainId, hours]) => {
+                    const h = Number(hours) || 0;
+                    state.domainHours[domainId] = Math.max(0, (state.domainHours[domainId] || 0) - h);
+                });
+            }
+
+            // Remove today's log entry
+            state.logs.splice(idx, 1);
+
+            // Do not touch bestStreak; current streak recalculates based on "today" presence
+            updateStreak();
+
+            // Hide banner if it was shown from earlier
+            const banner = document.getElementById('punishment-banner');
+            if (banner) banner.classList.remove('visible');
+
+            console.log('Cleared today log, ready to fill again:', today);
+            saveState();
+            updateUI();
+        }
+
+        // Add tombstone
+        function addTombstone(excuse) {
+            const graveyard = document.getElementById('graveyard');
+            const tombstone = document.createElement('div');
+            tombstone.className = 'tombstone';
+            tombstone.setAttribute('title', excuse);
+            graveyard.appendChild(tombstone);
+        }
+
+        // Update UI
+        function updateUI() {
+            const wealth = calculateWealth();
+            const daysLeft = getDaysRemaining();
+            const progress = (wealth / CONFIG.TARGET_NET_WORTH) * 100;
+            const totalHours = Object.values(state.domainHours).reduce((a, b) => a + b, 0);
+            const burnout = calculateBurnout();
+            
+            document.getElementById('start-date').textContent = 
+                new Date(START_DATE).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            document.getElementById('end-date').textContent = 
+                new Date(END_DATE).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            document.getElementById('target-networth').textContent = 
+                '$' + Math.round(wealth).toLocaleString();
+            
+            document.getElementById('days-left').textContent = daysLeft;
+            document.getElementById('streak-value').textContent = state.currentStreak;
+            document.getElementById('best-streak').textContent = state.bestStreak;
+            document.getElementById('total-hours').textContent = Math.round(totalHours);
+            
+            document.getElementById('progress-percent').textContent = 
+                Math.min(progress, 100).toFixed(1) + '%';
+            document.getElementById('progress-fill').style.width = 
+                Math.min(progress, 100) + '%';
+            
+            document.getElementById('burnout-percent').textContent = 
+                Math.round(burnout) + '%';
+            document.getElementById('burnout-fill').style.width = burnout + '%';
+            
+            if (burnout > 80) {
+                document.getElementById('burnout-warning').innerHTML = 
+                    '⚠ CRITICAL: Reduce domain focus to avoid burnout';
+                document.getElementById('burnout-warning').style.color = 'var(--red)';
+            } else if (burnout > 50) {
+                document.getElementById('burnout-warning').innerHTML = 
+                    '⚠ HIGH: Consider consolidating your focus';
+                document.getElementById('burnout-warning').style.color = 'var(--burnout-warning)';
+            }
+            
+            const last7Days = state.logs.slice(-7);
+            const missedDays = last7Days.filter(l => l.total === 0).length;
+            const penalty = missedDays * 0.5;
+            document.getElementById('penalty-rate').textContent = `+${penalty.toFixed(1)}%`;
+            
+            // Calculate opportunity cost (show both penalties and missed potential)
+            const missedHours = state.logs.reduce((sum, log) => sum + (log.total === 0 ? 4 : 0), 0);
+            const missedPotential = missedHours * CONFIG.BASE_HOURLY_RATE * 1.5;
+            const totalLost = state.totalPenalty + missedPotential;
+            
+            document.getElementById('regret-amount').textContent = 
+                '$' + Math.round(totalLost).toLocaleString();
+            // IMPORTANT: don't double-count missed days (state.missedDays already tracks penalties)
+            document.getElementById('regret-hours').textContent =
+                `${state.missedDays} days missed`;
+            
+            // Make regret amount red if there's loss
+            if (totalLost > 0) {
+                document.getElementById('regret-amount').style.color = 'var(--red)';
+            } else {
+                document.getElementById('regret-amount').style.color = 'var(--green)';
+            }
+            
+            const progressToKey = Math.min(state.currentStreak / CONFIG.STREAK_FOR_KEY, 1);
+            document.getElementById('reliquary-key').style.bottom = 
+                (30 + (progressToKey * 150)) + 'px';
+            document.getElementById('proximity-text').textContent = 
+                state.currentStreak >= CONFIG.STREAK_FOR_KEY ? 
+                'KEY IS YOURS' : 
+                `${state.currentStreak}/${CONFIG.STREAK_FOR_KEY} DAYS TO KEY`;
+            
+            renderCompoundBars();
+            renderDomains();
+        }
+
+        // Render compound bars
+        function renderCompoundBars() {
+            const container = document.getElementById('compound-bars');
+            container.innerHTML = '';
+            
+            const last30 = state.logs.slice(-30);
+            const today = getTodayStr();
+            
+            last30.forEach(log => {
+                const bar = document.createElement('div');
+                bar.className = 'compound-bar';
+                
+                const height = Math.min(60, (log.total / 8) * 60);
+                bar.style.height = height + 'px';
+                
+                if (log.total === 0) {
+                    bar.style.background = '#000';
+                    bar.style.border = '1px solid red';
+                    if (log.date === today) {
+                        bar.classList.add('missed-today');
+                    }
+                } else {
+                    bar.style.background = `linear-gradient(45deg, var(--gold), var(--green))`;
+                }
+                
+                container.appendChild(bar);
+            });
+        }
+
+        // Initialize
+        async function init() {
+            await loadState();
+            renderDomains();
+            renderInputs();
+            updateStreak();
+            updateUI();
+            
+            checkReckoning();
+            setInterval(checkReckoning, 1000);
+
+            // On load, immediately check if a miss penalty should be applied (e.g. refresh after window close)
+            checkAndApplyMissPenalty();
+            // Ongoing miss detection every 8 seconds
+            setInterval(checkAndApplyMissPenalty, 8000);
+            
+            document.getElementById('settle-button').addEventListener('click', settle);
+            document.getElementById('clear-today-button').addEventListener('click', () => {
+                if (confirm('CLEAR TODAY? This will undo today’s recorded hours so you can enter again. Penalties (if any) remain permanent.')) {
+                    clearTodayData();
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
