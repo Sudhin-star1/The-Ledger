@@ -1,0 +1,7 @@
+{
+  "name": "the-ledger",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/copy-static.js"
+  }
+}

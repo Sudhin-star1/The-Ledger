@@ -17,11 +17,15 @@ Local dev: run Flask on port `8000` and serve the folder with any static server 
 
 ## Deploy frontend on Vercel
 
-1. Push this repo to GitHub.
-2. [Vercel](https://vercel.com) → **Add New…** → **Project** → import **`Sudhin-star1/The-Ledger`** (or your fork).
-3. **Framework preset:** Other (or “No framework”). Root directory: **`.`** (repo root).
-4. **Build command:** leave empty (or `echo "static"`). **Output:** not required for static HTML at root — Vercel serves `index.html` at `/`.
-5. Deploy. Your site URL will look like `https://the-ledger-xxxx.vercel.app`.
+Vercel was showing **404** if it auto-detected **Python** (`requirements.txt`) and didn’t emit static files. This repo uses a tiny **`npm run build`** that copies HTML/JS into **`dist/`**, and **`vercel.json`** sets **`outputDirectory`** to `dist`.
+
+1. Push this repo to GitHub (includes `package.json` + `scripts/copy-static.js`).
+2. [Vercel](https://vercel.com) → **Add New…** → **Project** → import the repo.
+3. **Framework:** Vercel may pick **Other** or **Node** — that’s fine. Root: **`.`**
+4. Confirm **Build Command** is `npm run build` and **Output Directory** is `dist` (usually read from `vercel.json`).
+5. Deploy. Open the production URL — `/` should serve `index.html`.
+
+If you still see 404: **Project → Settings → General** → clear overrides so `vercel.json` controls build/output, then redeploy.
 
 **API URL:** `api-config.js` sets `window.THE_LEDGER_API_BASE` to your **Render** URL (e.g. `https://the-ledger-nvt1.onrender.com`).  
 **Local dev:** when you open `http://localhost:5500`, the app uses **`http://localhost:8000`** for Flask — it does **not** use Render, so you can run `python server.py` locally.
