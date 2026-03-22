@@ -4,10 +4,10 @@ Static dashboard (`index.html`) + a small **Flask** API under **`backend/`** (`b
 
 ## Why not “only Vercel”?
 
-- **Vercel** hosts the **frontend** (HTML/CSS/JS built into `dist/`).
+- **Vercel** hosts the **frontend** (static `index.html`, `api-config.js`, etc. at the repo root).
 - **Flask** runs on **Render** (or Railway/Fly) — not on Vercel’s static hosting.
 
-**Important:** A **`requirements.txt` at the repo root** made Vercel treat the project as **Python** and try to run **serverless functions**, which caused **`500 FUNCTION_INVOCATION_FAILED`**. Python now lives only in **`backend/`**, and **`.vercelignore`** excludes that folder from the Vercel deployment.
+**Important:** A **`requirements.txt` at the repo root** (and/or a broken **Node build → `dist/`** setup) made Vercel treat the project wrong and show **`500 FUNCTION_INVOCATION_FAILED`**. Python now lives only in **`backend/`**. **`.vercelignore`** excludes `backend/` and other junk from the Vercel upload. The frontend is deployed as **static files** with **no build step**.
 
 **Recommended split**
 
@@ -28,13 +28,17 @@ Static dashboard (`index.html`) + a small **Flask** API under **`backend/`** (`b
 
 ## Deploy frontend on Vercel
 
-1. Push this repo to GitHub (`package.json`, `scripts/copy-static.js`, `vercel.json`).
-2. [Vercel](https://vercel.com) → **New Project** → import the repo.
-3. **Root directory:** `.`  
-4. **Build Command:** `npm run build` · **Output Directory:** `dist` (from `vercel.json`).
-5. **Framework:** Other / Node is fine — there must be **no** root `requirements.txt` (Python is under `backend/` only).
+The frontend is **plain static files** at the repo root (`index.html`, `api-config.js`, etc.). There is **no** `npm run build` — that was removed so Vercel does not run a Node “output” step that can break or look like a serverless app.
 
-If you still see errors: **Settings → General** → remove overrides for build/output, then **Redeploy**.
+1. Push this repo to GitHub.
+2. [Vercel](https://vercel.com) → **New Project** → import the repo.
+3. **Framework preset:** **Other**.
+4. **Root directory:** `.`
+5. **Build Command:** leave **empty** (or delete any override).
+6. **Output Directory:** leave **empty** (not `dist`).
+7. **Install Command:** leave **empty** (no `package.json` in repo).
+
+If you **still** see `FUNCTION_INVOCATION_FAILED` or **500**, open **Project → Settings → General** and **clear** any old **Build / Output / Install** overrides from an earlier setup, then **Redeploy** (or create a **new** project linked to the same repo).
 
 **Production API URL** is set in **`api-config.js`** (e.g. your Render URL).
 

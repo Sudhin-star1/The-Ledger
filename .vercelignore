@@ -1,2 +1,11 @@
-# Flask API lives here — only Render needs it. Keeps Vercel from treating the repo as a Python project.
+# API + Python (Render only)
 backend/
+
+# Local / build artifacts (not needed on Vercel)
+venv/
+.venv/
+node_modules/
+dist/
+scripts/
+__pycache__/
+*.pyc
